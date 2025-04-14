@@ -1,6 +1,8 @@
 from core.DocLayoutYOLO import DocLayoutYOLOModel
 from core.dataset import Dataset
 
+model_path = "/home/wenruifeng/.cache/modelscope/hub/models/opendatalab/PDF-Extract-Kit-1___0/models/Layout/YOLO/doclayout_yolo_docstructbench_imgsz1280_2501.pt"  # 例如 "models/yolov10l-doc.pt"
+
 
 def doc_analyze(
     dataset: Dataset,  # 输入的 Dataset 对象，包含文档信息
@@ -23,16 +25,17 @@ def doc_analyze(
             page_data = dataset.get_page(index)  # 获取页面数据
             img_dict = page_data.get_image()  # 获取页面图像及其信息
             images.append(img_dict['img'])  # 添加图像到列表
-            page_wh_list.append((img_dict['width'], img_dict['height']))  # 添加页面宽高到列表
+            page_wh_list.append(
+                (img_dict['width'], img_dict['height']))  # 添加页面宽高到列表
 
     layout_images = []
     # 初始化存储布局结果的列表
     images_layout_res = []
-    model = DocLayoutYOLOModel('/Users/vvrfxyz/Downloads/doclayout_yolo_docstructbench_imgsz1024.onnx','cpu')
+    model_instance = DocLayoutYOLOModel(model_path, 'cuda')
     # 准备用于布局分析的图像列表
     for image_index, image in enumerate(images):
         layout_images.append(image)
-    images_layout_res += model.batch_predict(
-                layout_images, 1
-            )
+    images_layout_res += model_instance.batch_predict(
+        layout_images, 1
+    )
     print(1)

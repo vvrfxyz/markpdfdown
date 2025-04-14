@@ -4,7 +4,9 @@ import fitz  # 导入 PyMuPDF 库
 from abc import ABC, abstractmethod
 from pydantic import BaseModel, Field
 from typing import Callable, Iterator
-from loguru import logger  # 导入日志库 loguru
+from loguru import logger
+
+from core.utils import fitz_doc_to_image  # 导入日志库 loguru
 
 
 class PageInfo(BaseModel):
@@ -187,9 +189,6 @@ class PymuDocDataset(Dataset):
         返回:
             Any: 返回由 proc 生成的结果
         """
-        # 如果调用时提供了 lang 参数且数据集有确定的语言，则用数据集的语言覆盖传入的 lang
-        if 'lang' in kwargs and self._lang is not None:
-            kwargs['lang'] = self._lang
         # 调用 proc，并将数据集实例 (self) 作为第一个参数传递
         return proc(self, *args, **kwargs)
 

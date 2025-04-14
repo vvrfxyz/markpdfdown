@@ -67,7 +67,7 @@ def doc_analyze(
             for item_idx, item in enumerate(layout_res):
                 # 检查 'poly' 键是否存在且不为 None
                 if 'poly' in item and item['poly'] is not None:
-                    layout_res[item_idx]['text'] = '12345，上山打老虎'
+                    item['text'] = '12345，上山打老虎'
                     try:
                         category_id = item.get('category_id', 'unknown')
                         if category_id != 3 and category_id != 5:
@@ -112,7 +112,7 @@ def doc_analyze(
                         uuid = str(uuid4())
                         filename = f"{uuid}.png"
                         output_path = os.path.join(output_dir, filename)
-                        images_layout_res[image_idx]['media'] = 'photo/' + filename
+                        item['media'] = 'photo/' + filename
                         # 保存图像
                         # 假设 original_image 是 RGB 格式，转换为 BGR 进行保存
                         # 如果 original_image 已经是 BGR，则移除 cvtColor
